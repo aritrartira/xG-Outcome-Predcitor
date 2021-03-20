@@ -1,13 +1,13 @@
-include("util.jl")
+#include("util.jl")
 
 function prob_A_win(A_xG::Array, B_xG::Array)
     reset_outcomes()
     simulate(A_xG, B_xG)
     
     fav_outcomes = 0
-    for i in outcomes.keys
-        if i[1] > i[2]
-            fav_outcomes = fav_outcomes + outcomes[i]
+    for i in pairs(outcomes)
+        if parse(Int16, i[1][1]) > parse(Int16, i[1][2])
+            fav_outcomes = fav_outcomes + outcomes[i[1]]
         end
     end
 
@@ -20,9 +20,9 @@ function prob_B_win(A_xG::Array, B_xG::Array)
     simulate(A_xG, B_xG)
     
     fav_outcomes = 0
-    for i in outcomes.keys
-        if i[1] < i[2]
-            fav_outcomes = fav_outcomes + outcomes[i]
+    for i in pairs(outcomes)
+        if parse(Int16, i[1][1]) < parse(Int16, i[1][2])
+            fav_outcomes = fav_outcomes + outcomes[i[1]]
         end
     end
 
@@ -35,13 +35,11 @@ function prob_draw(A_xG::Array, B_xG::Array)
     simulate(A_xG, B_xG)
     
     fav_outcomes = 0
-    for i in outcomes.keys
-        if i[1] == i[2] && i[1] + i[2] != 0
-            fav_outcomes = fav_outcomes + outcomes[i]
+    for i in pairs(outcomes)
+        if parse(Int16, i[1][1]) == parse(Int16, i[1][2])
+            fav_outcomes = fav_outcomes + outcomes[i[1]]
         end
     end
-    
-    fav_outcomes = fav_outcomes + outcomes[(0, 0)]
 
     prob = fav_outcomes / 100000.0
     return prob
@@ -55,4 +53,7 @@ function most_likely_outcome(A_xG::Array, B_xG::Array)
     return string(most_likely[1]) * "-" * string(most_likely[2])
 end
 
-most_likely_outcome([0.1, 0.07, 0.04, 0.40, 0.09, 0.04, 0.68], [0.02, 0.39, 0.07, 0.04, 0.06, 0.07, 0.02, 0.01, 0.02])
+println("Most Likely Outcome: ", most_likely_outcome([0.024233000352978706, 0.023589307442307472, 0.07318258285522461, 0.5719524025917053, 0.054489538073539734, 0.07023967802524567, 0.03132713958621025, 0.11162280291318893, 0.344626784324646, 0.028496230021119118, 0.03677608445286751, 0.08288385719060898, 0.10795629024505615, 0.1563132107257843], [0.16951031982898712, 0.6114954352378845, 0.08262842893600464, 0.03686433658003807, 0.07559982687234879, 0.5810050964355469]))
+println("Everton Win Probability: ", prob_B_win([0.024233000352978706, 0.023589307442307472, 0.07318258285522461, 0.5719524025917053, 0.054489538073539734, 0.07023967802524567, 0.03132713958621025, 0.11162280291318893, 0.344626784324646, 0.028496230021119118, 0.03677608445286751, 0.08288385719060898, 0.10795629024505615, 0.1563132107257843], [0.16951031982898712, 0.6114954352378845, 0.08262842893600464, 0.03686433658003807, 0.07559982687234879, 0.5810050964355469]))
+println("Manchester United Win Probability: ", prob_A_win([0.024233000352978706, 0.023589307442307472, 0.07318258285522461, 0.5719524025917053, 0.054489538073539734, 0.07023967802524567, 0.03132713958621025, 0.11162280291318893, 0.344626784324646, 0.028496230021119118, 0.03677608445286751, 0.08288385719060898, 0.10795629024505615, 0.1563132107257843], [0.16951031982898712, 0.6114954352378845, 0.08262842893600464, 0.03686433658003807, 0.07559982687234879, 0.5810050964355469]))
+println("Draw Probability: ", prob_draw([0.024233000352978706, 0.023589307442307472, 0.07318258285522461, 0.5719524025917053, 0.054489538073539734, 0.07023967802524567, 0.03132713958621025, 0.11162280291318893, 0.344626784324646, 0.028496230021119118, 0.03677608445286751, 0.08288385719060898, 0.10795629024505615, 0.1563132107257843], [0.16951031982898712, 0.6114954352378845, 0.08262842893600464, 0.03686433658003807, 0.07559982687234879, 0.5810050964355469]))
